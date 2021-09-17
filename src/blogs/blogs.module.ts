@@ -4,9 +4,10 @@ import { TypeOrmConfig } from 'src/config/typeorm.config';
 import { BlogsController } from './blogs.controller';
 import { BlogRepository } from './blog.repository';
 import { BlogsService } from './blogs.service';
+import { CloudinaryModule } from 'src/cloudinary/cloudinary.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([BlogRepository])],
+  imports: [TypeOrmModule.forFeature([BlogRepository]), CloudinaryModule],
   controllers: [BlogsController],
   providers: [BlogsService]
 })
