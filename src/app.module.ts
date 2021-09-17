@@ -9,6 +9,8 @@ import { UserModule } from './user/user.module';
 import { UserService } from './user/user.service';
 import { CategoryModule } from './category/category.module';
 import { TestModule } from './test/test.module';
+import { CloudinaryModule } from './cloudinary/cloudinary.module';
+// import { Cloudinary } from './cloudinary';
 
 @Module({
   imports: [
@@ -25,8 +27,9 @@ import { TestModule } from './test/test.module';
     UserModule,
     CategoryModule,
     TestModule,
+    CloudinaryModule,
   ],
   controllers: [],
-  providers: [],
+  // providers: [Cloudinary],
 })
 export class AppModule {}

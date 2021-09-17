@@ -8,14 +8,14 @@ export class CreateBlogDto {
   @IsNotEmpty()
   cover: string;
 
-  @IsNotEmpty()
-  @MinLength(10)
-  @MaxLength(200)
+  // @IsNotEmpty()
+  // @MinLength(10)
+  // @MaxLength(200)
   exceprt: string;
 
   @IsNotEmpty()
   @MinLength(100)
-  @MaxLength(10000)
+  // @MaxLength(1000000)
   body: string;
 
 
