@@ -11,13 +11,16 @@ import * as bcrypt from 'bcrypt';
 import { Blog } from 'src/blogs/blog.entity';
 
 @Entity()
-@Unique(['username'])
+@Unique(['email'])
 export class User extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column()
   username: string;
+
+  @Column()
+  email: string;
 
   @Column()
   password: string;
@@ -27,6 +30,9 @@ export class User extends BaseEntity {
 
   @Column()
   avatar: string;
+
+  @Column()
+  bias: string;
 
   @CreateDateColumn()
   created_at: Date;

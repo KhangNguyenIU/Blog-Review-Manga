@@ -18,11 +18,11 @@ export class CategoryBlog extends BaseEntity {
   @PrimaryColumn()
   categoryId: number;
 
-  @ManyToOne(() => Blog, (blog: Blog) => blog.categoriesBlogs)
+  @ManyToOne(() => Blog, (blog: Blog) => blog.categoriesBlogs, {onDelete:'CASCADE'})
   @JoinColumn({ name: 'blogId' })
   blog: Blog;
 
-  @ManyToOne(() => Category, (category: Category) => category.categoriesBlogs)
+  @ManyToOne(() => Category, (category: Category) => category.categoriesBlogs, {onDelete:'CASCADE'})
   @JoinColumn({ name: 'categoryId' })
   category: Category;
 }

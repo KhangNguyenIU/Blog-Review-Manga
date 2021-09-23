@@ -13,7 +13,7 @@ import {
 import { log } from 'console';
 import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 import { User } from 'src/user/user.entity';
-import { blobToBase64, isBase64Image } from 'src/utilities/handleImageUrl';
+import {  isBase64Image } from 'src/utilities/handleImageUrl';
 import { Blog } from './blog.entity';
 import { BlogRepository } from './blog.repository';
 import { CreateBlogDto } from './dto/create-blog.dto';
@@ -72,6 +72,9 @@ export class BlogsService {
     createBlogDto: CreateBlogDto,
 	user:User
   ): Promise<Blog> {
+
+    console.log({createBlogDto}, typeof createBlogDto)
+
     const { title, cover, body, exceprt } = createBlogDto;
 
     let blog = new Blog();
