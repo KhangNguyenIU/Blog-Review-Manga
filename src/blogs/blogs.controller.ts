@@ -75,7 +75,7 @@ export class BlogsController {
     @Body(ValidationPipe) createBlogDto: CreateBlogDto,
     @GetUser() user: User,
   ): Promise<Blog> {
-    // console.log({user})
+    console.log({user})
     return this.blogsService.createBlog(createBlogDto, user);
   }
 }
