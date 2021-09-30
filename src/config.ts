@@ -10,11 +10,11 @@ export const config = () => ({
     synchronize: Boolean(process.env.TYPEORM_SYNC),
     database: process.env.DB_DATABASE,
     ssl:true,
-    extra: {
-      ssl: {
-        rejectUnauthorized: false,
-      },
-    },
+    // extra: {
+    //   ssl: {
+    //     rejectUnauthorized: false,
+    //   },
+    // },
     // logging: true,
     entities: [`dist/**/**/*.entity{.ts,.js}`],
   },
