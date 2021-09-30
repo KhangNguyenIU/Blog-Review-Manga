@@ -14,4 +14,8 @@ export class CategoryService {
     async createCategory (createCateforyDto : CreateCategoryDto):Promise<Category>{
         return this.categoryRepository.createCategory(createCateforyDto)
     }
+
+    async getAllCategories(): Promise<Category[]>{
+        return await this.categoryRepository.find()
+    }
 }
