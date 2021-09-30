@@ -14,7 +14,7 @@ async function bootstrap() {
   app.use(urlencoded({ extended: true, limit: '50mb' }));
   const configServer = app.get(ConfigService);
 
-  await app.listen(process.env.PORT || 8000, () => {
+  await app.listen(parseInt(process.env.PORT) || 8000, () => {
     console.log('Server is running on port: ', configServer.get('port'));
   });
 }
