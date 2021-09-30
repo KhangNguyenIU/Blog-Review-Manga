@@ -34,12 +34,12 @@ export class AuthController {
     return res.send('clear');
   }
 
-  @Post('signup')
+  @Post('/signup')
   signup(@Body(ValidationPipe) createUserDto: CreateUserDto): Promise<string> {
     return this.authService.signup(createUserDto);
   }
 
-  @Post('signin')
+  @Post('/signin')
   signin(
     @Body(ValidationPipe) loginDto: LoginDto,
     @Res({ passthrough: true }) res: Response,
@@ -49,8 +49,10 @@ export class AuthController {
 
   @Post()
   @UseGuards(AuthGuard('jwt'))
-  getUser(@GetUser() user : User, @Res() res: Response){
-    return res.send(user)
+  getUser(@GetUser() user : User){
+    // console.log("user", user)
+    // return res.send(user)
+    return user
   }
 
   @Get('/test')

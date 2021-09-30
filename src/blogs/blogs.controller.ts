@@ -3,12 +3,14 @@ import {
   Controller,
   Delete,
   Get,
+  HttpStatus,
   Param,
   ParseIntPipe,
   Patch,
   Post,
   Query,
   Req,
+  Res,
   UploadedFile,
   UploadedFiles,
   UseGuards,
@@ -56,6 +58,7 @@ export class BlogsController {
     return this.blogsService.getBlogById(id);
   }
 
+
   @Patch('/:id')
   updateBlog(
     @Param('id', ParseIntPipe) id: number,
@@ -75,7 +78,7 @@ export class BlogsController {
     @Body(ValidationPipe) createBlogDto: CreateBlogDto,
     @GetUser() user: User,
   ): Promise<Blog> {
-    console.log({user})
+    // console.log({user})
     return this.blogsService.createBlog(createBlogDto, user);
   }
 }

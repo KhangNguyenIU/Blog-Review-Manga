@@ -33,6 +33,9 @@ export class Blog extends BaseEntity {
   @Column()
   body: string;
 
+  @Column()
+  slug: string;
+
   @CreateDateColumn()
   created_at: Date;
 

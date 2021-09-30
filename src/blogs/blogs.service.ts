@@ -13,7 +13,8 @@ import {
 import { log } from 'console';
 import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 import { User } from 'src/user/user.entity';
-import {  isBase64Image } from 'src/utilities/handleImageUrl';
+import { isBase64Image } from 'src/utilities/handleImageUrl';
+import { exceprtCut } from 'src/utilities/handleString';
 import { Blog } from './blog.entity';
 import { BlogRepository } from './blog.repository';
 import { CreateBlogDto } from './dto/create-blog.dto';
@@ -37,23 +38,13 @@ export class BlogsService {
   }
 
   async getBlogById(id: number): Promise<Blog> {
-    const blog = await this.blogRepository.findOne({ id });
+    const blog = await this.blogRepository.getBlogById(id)
     if (!blog) {
       throw new NotFoundException(`Blog with id: ${id} is not found!`);
     }
 
     return blog;
   }
-
-//   async createBlog(createBlogDto: CreateBlogDto, user: User): Promise<Blog> {
-//     const result = await this.blogRepository.createBlog(createBlogDto, user);
-//     if (!result) {
-//       throw new NotImplementedException(
-//         "Your blog haven't been saved, please try again",
-//       );
-//     }
-//     return result;
-//   }
 
   async updateBlog(updateBlogDto: UpdateBlogDto, id: number): Promise<Blog> {
     return this.blogRepository.updateBlog(updateBlogDto, id);
@@ -68,17 +59,12 @@ export class BlogsService {
     return message;
   }
 
-  async createBlog(
-    createBlogDto: CreateBlogDto,
-	user:User
-  ): Promise<Blog> {
+  async createBlog(createBlogDto: CreateBlogDto, user: User): Promise<Blog> {
+    // console.log({ createBlogDto }, typeof createBlogDto);
 
-    console.log({createBlogDto}, typeof createBlogDto)
-
-    const { title, cover, body, exceprt } = createBlogDto;
+    const { title, cover, body,  categories } = createBlogDto;
 
     let blog = new Blog();
-	createBlogDto.categories =[8]
     if (isBase64Image(cover)) {
       const uploadedImage: any = await this.cloudinaryService.uploadImage(
         cover,
@@ -89,7 +75,7 @@ export class BlogsService {
     }
 
     let content = JSON.parse(body);
-
+    let exceprt : string= exceprtCut(content.blocks) 
     var arrayMap = await Promise.all(
       content.blocks.map(async (block, index) => {
         if (block.type === 'image') {
@@ -101,11 +87,12 @@ export class BlogsService {
         }
       }),
     );
+
+      createBlogDto.exceprt =exceprt
     createBlogDto.body = JSON.stringify(content);
     // console.log(createBlogDto);
-    const result =  await this.blogRepository.createBlog(createBlogDto, user)
-	if(!result)
-	  throw new NotImplementedException('Error in saving blog')
-	return result
+    const result = await this.blogRepository.createBlog(createBlogDto, user);
+    if (!result) throw new NotImplementedException('Error in saving blog');
+    return result;
   }
 }

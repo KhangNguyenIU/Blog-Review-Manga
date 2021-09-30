@@ -7,9 +7,34 @@ import { Blog } from './blog.entity';
 import { CreateBlogDto } from './dto/create-blog.dto';
 import { GetBlogFilterDto } from './dto/get-blog-filter.dto';
 import { UpdateBlogDto } from './dto/update-blog.dto';
-
+import slugify from 'slugify';
 @EntityRepository(Blog)
 export class BlogRepository extends Repository<Blog> {
+  async getBlogById(id: number): Promise<Blog> {
+    const query = this.createQueryBuilder('blog');
+    query
+      .where({ id })
+      .select([
+        'blog',
+        'user.username',
+        'user.email',
+        'user.avatar',
+        'cb',
+        'category',
+      ])
+      .leftJoin('blog.user', 'user')
+      .leftJoin('blog.categoriesBlogs', 'cb', 'cb.blogId = blog.id')
+
+      .leftJoinAndSelect(
+        'cb.category',
+        'category',
+        'category.id = cb.categoryId',
+      );
+
+    const blog = await query.getOne();
+    return blog;
+  }
+
   async getBlogs(getBlogsFilterDto: GetBlogFilterDto): Promise<Blog[]> {
     const { search, limit, page, order } = getBlogsFilterDto;
     const take = isNaN(limit) ? 10 : Number(limit);
@@ -28,9 +53,29 @@ export class BlogRepository extends Repository<Blog> {
       query.take(take).skip(skip);
     }
 
-    if (order) {
-      query.orderBy(order);
-    }
+    // if (order) {
+    //   query.orderBy(order);
+    // }
+
+    query
+      .select([
+        'blog',
+        'user.username',
+        'user.email',
+        'user.avatar',
+        'cb',
+        'category',
+      ])
+      .leftJoin('blog.user', 'user')
+      .leftJoin('blog.categoriesBlogs', 'cb', 'cb.blogId = blog.id')
+
+      .leftJoinAndSelect(
+        'cb.category',
+        'category',
+        'category.id = cb.categoryId',
+      )
+      .orderBy('blog.created_at');
+      
 
     const blogs = await query.getMany();
     return blogs;
@@ -41,7 +86,7 @@ export class BlogRepository extends Repository<Blog> {
     const { categories } = createBlogDto;
     const categoriesList = categories.map((x) => Number(x));
 
-    const query = getRepository(Category).createQueryBuilder('category')
+    const query = getRepository(Category).createQueryBuilder('category');
     const categoryList = await query
       .where('category.id IN (:...cates)', { cates: categoriesList })
       .getMany();
@@ -51,7 +96,7 @@ export class BlogRepository extends Repository<Blog> {
     blog.cover = cover;
     blog.body = body;
     blog.exceprt = exceprt;
-
+    blog.slug = slugify(title);
     blog.user = user;
     await blog.save();
     for (const cate of categoryList) {
