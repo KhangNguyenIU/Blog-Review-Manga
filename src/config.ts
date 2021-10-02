@@ -1,5 +1,5 @@
 export const config = () => ({
-  port: Number(process.env.PORT) || 3000,
+  port: Number(process.env.PORT) || 8000,
   jwtSecret: process.env.JWT_SECRET,
   database: {
     type: 'postgres',
@@ -9,7 +9,8 @@ export const config = () => ({
     password: process.env.DB_PASSWORD,
     synchronize: Boolean(process.env.TYPEORM_SYNC),
     database: process.env.DB_DATABASE,
-    ssl:true,
+    ssl: true,
+    logging: false,
     // extra: {
     //   ssl: {
     //     rejectUnauthorized: false,
