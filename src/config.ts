@@ -7,10 +7,10 @@ export const config = () => ({
     port: process.env.DB_PORT,
     username: process.env.DB_USERNAME,
     password: process.env.DB_PASSWORD,
-    synchronize: Boolean(process.env.TYPEORM_SYNC),
+    synchronize: Boolean(process.env.TYPEORM_SYNC) || true,
     database: process.env.DB_DATABASE,
     ssl: true,
-    logging: false,
+    logging: true,
     // extra: {
     //   ssl: {
     //     rejectUnauthorized: false,
