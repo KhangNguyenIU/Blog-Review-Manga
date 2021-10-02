@@ -1,7 +1,6 @@
 import { PassportStrategy } from '@nestjs/passport';
 import { UserService } from 'src/user/user.service';
 import { Strategy, ExtractJwt } from 'passport-jwt';
-import { ConfigService } from '@nestjs/config';
 import { JwtPayload } from './jwt-payload.interface';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserRepository } from 'src/user/user.repository';
@@ -10,9 +9,9 @@ import {
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
+import * as config from 'config';
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(
-    private config: ConfigService,
     @InjectRepository(UserRepository)
     private userRepository: UserRepository,
   ) {
@@ -24,12 +23,12 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
         return req.cookies['token'];
       },
       ignoreExpiration: false,
-      secretOrKey: process.env.JWT_SECRET,
+      secretOrKey: process.env.JWT_SECRET || config.get('jwt').secret,
     });
   }
 
   async validate(payload: JwtPayload) {
-    // console.log(payload); 
+    // console.log(payload);
     const { email } = payload;
     const user = await this.userRepository.findOne({ email });
     const { password, ...result } = user;

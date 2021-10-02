@@ -4,27 +4,28 @@ import { PassportModule } from '@nestjs/passport';
 import { UserService } from 'src/user/user.service';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
-import { config } from '../config';
-import { ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserRepository } from 'src/user/user.repository';
 import { JwtStrategy } from './jwt-Strategy';
 import { GoogleStrategy } from './google-strategy';
+import * as config from 'config';
+
+const dbConfig = config.get('jwt');
+
 @Module({
   controllers: [AuthController],
   providers: [AuthService, JwtStrategy, GoogleStrategy],
   imports: [
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.registerAsync({
-      useFactory: (config: ConfigService) => {
+      useFactory: () => {
         return {
-          secret: config.get<string>('jwtSecret'),
+          secret: process.env.JWT_SECRET || dbConfig.get('secret'),
           signOptions: {
             expiresIn: 86400,
           },
         };
       },
-      inject: [ConfigService],
     }),
     TypeOrmModule.forFeature([UserRepository]),
   ],
