@@ -9,8 +9,8 @@ export const config = () => ({
     password: process.env.DB_PASSWORD,
     synchronize: Boolean(process.env.TYPEORM_SYNC) || true,
     database: process.env.DB_DATABASE,
-    ssl: true,
-    logging: true,
+    // ssl: true,
+    // logging: true,
     // extra: {
     //   ssl: {
     //     rejectUnauthorized: false,
