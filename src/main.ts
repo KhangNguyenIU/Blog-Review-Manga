@@ -3,6 +3,7 @@ import { AppModule } from './app.module';
 
 import { urlencoded, json } from 'express';
 import * as cookieParser from 'cookie-parser';
+import * as config from "config"
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
@@ -15,6 +16,8 @@ async function bootstrap() {
   const port: number = parseInt(`${process.env.PORT}`) || 8000;
   await app.listen(port, () => {
     console.log('Server is running on port: ', port);
+    console.log("proces", process.env.PORT)
+    console.log('config', config.get("server").port)
   });
 }
 bootstrap();

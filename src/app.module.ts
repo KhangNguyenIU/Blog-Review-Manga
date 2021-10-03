@@ -10,11 +10,11 @@ import { CategoryModule } from './category/category.module';
 import { TestModule } from './test/test.module';
 import { CloudinaryModule } from './cloudinary/cloudinary.module';
 import { typeOrmConfig } from './config/typeorm.config';
+import { ConfigModule } from "@nestjs/config"
 // import { Cloudinary } from './cloudinary';
 
 @Module({
   imports: [
- 
     TypeOrmModule.forRoot(typeOrmConfig),
     BlogsModule,
     AuthModule,
@@ -22,6 +22,7 @@ import { typeOrmConfig } from './config/typeorm.config';
     CategoryModule,
     TestModule,
     CloudinaryModule,
+    ConfigModule.forRoot()
   ],
   controllers: [],
   // providers: [Cloudinary],
