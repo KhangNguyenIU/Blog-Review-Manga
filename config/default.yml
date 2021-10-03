@@ -1,0 +1,10 @@
+server:
+  port: 8000
+
+db:
+  type: 'postgres'
+  port: 5433
+  database: 'animeblog'
+
+jwt:
+ expireIn: 3600

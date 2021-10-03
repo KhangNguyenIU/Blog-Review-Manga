@@ -1,0 +1,12 @@
+db:
+  host: 'localhost'
+  username: 'postgres'
+  password: '22112209'
+  synchronize: true
+
+jwt :
+  secret: 'jsdfksdhafkjshfdsfs'
+
+google:
+  # clientId: '53871603397-hmic1p5a4tqdr33qphf4us21f1hdm548.apps.googleusercontent.com'
+  # clientSecret: 'cXrqoXZNnc9iEAMRSM3O04wf'
