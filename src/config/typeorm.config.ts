@@ -23,12 +23,12 @@ export const typeOrmConfig: TypeOrmModuleOptions = {
   username: process.env.DB_USERNAME || dbConfig.username,
   password: process.env.DB_PASSWORD || dbConfig.password,
   database: process.env.DB_DATABASE || dbConfig.database,
-  // ssl: true,
-  // extra: {
-  //   ssl: {
-  //     rejectUnauthorized: false,
-  //   },
-  // },
+  ssl: true,
+  extra: {
+    ssl: {
+      rejectUnauthorized: false,
+    },
+  },
   entities: [`dist/**/**/*.entity{.ts,.js}`],
   synchronize: process.env.TYPEORM_SYNC || dbConfig.synchronize,
 };
