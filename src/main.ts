@@ -6,9 +6,12 @@ import * as cookieParser from 'cookie-parser';
 import * as config from "config"
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule, {
-    cors: true,
-  });
+  const app = await NestFactory.create(AppModule);
+  app.enableCors({
+    origin:true,
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+    credentials: true,
+  })
   app.use(cookieParser());
   app.use(json({ limit: '50mb' }));
   app.use(urlencoded({ extended: true, limit: '50mb' }));
@@ -17,9 +20,6 @@ async function bootstrap() {
   await app.listen(port, () => {
     console.log('Server is running on port: ',port );
 
-    console.log("proces", process.env.PORT)
-    console.log("database", process.env.DB_DATABASE)
-    console.log('config', config.get("server").port)
   });
 }
 bootstrap();
