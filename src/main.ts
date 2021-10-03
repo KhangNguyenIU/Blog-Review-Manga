@@ -15,7 +15,7 @@ async function bootstrap() {
   // const configServer = app.get(ConfigService);
   const port: number = parseInt(`${process.env.PORT}`) || 8000;
   await app.listen(port, () => {
-    console.log('Server is running on port: ', );
+    console.log('Server is running on port: ',port );
 
     console.log("proces", process.env.PORT)
     console.log("database", process.env.DB_DATABASE)
