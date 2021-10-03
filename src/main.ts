@@ -19,7 +19,6 @@ async function bootstrap() {
   const port: number = parseInt(`${process.env.PORT}`) || 8000;
   await app.listen(port, () => {
     console.log('Server is running on port: ',port );
-
   });
 }
 bootstrap();

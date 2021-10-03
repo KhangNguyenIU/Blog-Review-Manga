@@ -51,7 +51,7 @@ export class Blog extends BaseEntity {
 
   @OneToMany(
     () => CategoryBlog,
-    (categoryBlog: CategoryBlog) => categoryBlog.blog,
+    (categoryBlog: CategoryBlog) => categoryBlog.blog,{onDelete:"CASCADE"}
   )
   categoriesBlogs: CategoryBlog[];
 }

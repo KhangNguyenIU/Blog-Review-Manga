@@ -40,7 +40,7 @@ export class User extends BaseEntity {
   @Column()
   role: number;
   
-  @OneToMany((type) => Blog, (blog) => blog.user, { eager: true })
+  @OneToMany((type) => Blog, (blog) => blog.user, { eager: true ,onDelete:"CASCADE"})
   blogs: Blog[];
 
   async validateUserPassword(password: string): Promise<Boolean> {

@@ -60,7 +60,6 @@ export class BlogsService {
   }
 
   async createBlog(createBlogDto: CreateBlogDto, user: User): Promise<Blog> {
-    // console.log({ createBlogDto }, typeof createBlogDto);
 
     const { title, cover, body,  categories } = createBlogDto;
 

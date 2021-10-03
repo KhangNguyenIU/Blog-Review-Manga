@@ -39,7 +39,7 @@ export class AuthService {
         const accessToken = this.jwtService.sign(payload);
         res.cookie('token', accessToken, {
           httpOnly: true,
-          expires: new Date(new Date().getTime() +1000000),
+          expires: new Date(new Date().getTime() +10000000),
           sameSite: 'strict',
         });
         return { accessToken };
@@ -51,7 +51,15 @@ export class AuthService {
         password: jti,
         reenterpassword: jti,
       };
-      return this.userRepository.signup(createUserDto);
+      const result = await this.userRepository.signup(createUserDto);
+      const payload: JwtPayload = { email };
+        const accessToken = this.jwtService.sign(payload);
+        res.cookie('token', accessToken, {
+          httpOnly: true,
+          expires: new Date(new Date().getTime() +10000000),
+          sameSite: 'strict',
+        });
+        return { accessToken };
     }
     throw new NotImplementedException();
   }
