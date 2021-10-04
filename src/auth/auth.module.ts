@@ -22,7 +22,7 @@ const dbConfig = config.get('jwt');
         return {
           secret: process.env.JWT_SECRET || dbConfig.secret,
           signOptions: {
-            expiresIn: 86400,
+            expiresIn: '24h',
           },
         };
       },
