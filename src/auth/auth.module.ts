@@ -20,7 +20,7 @@ const dbConfig = config.get('jwt');
     JwtModule.registerAsync({
       useFactory: () => {
         return {
-          secret: process.env.JWT_SECRET || dbConfig.secret,
+          secret: process.env.JWT_SECRET ,
           signOptions: {
             expiresIn: '24h',
           },
