@@ -41,7 +41,7 @@ export class AuthService {
           return res
             .cookie('token', accessToken, {
               expires: new Date(new Date().getTime() + 1000000),
-              domain:'http://localhost:3000'
+              domain:'https://manga-blog.herokuapp.com'
             })
             .status(200)
             .json({ accessToken });
@@ -63,7 +63,7 @@ export class AuthService {
         return res
           .cookie('token', accessToken, {
             expires: new Date(new Date().getTime() + 1000000),
-            domain:'http://localhost:3000'
+            domain:'https://manga-blog.herokuapp.com'
 
           })
           .status(200)
