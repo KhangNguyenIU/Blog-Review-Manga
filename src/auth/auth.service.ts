@@ -40,7 +40,6 @@ export class AuthService {
         res.cookie('token', accessToken, {
           httpOnly: true,
           expires: new Date(new Date().getTime() +10000000),
-          sameSite: 'strict',
         });
         return { accessToken };
       }
@@ -57,7 +56,6 @@ export class AuthService {
         res.cookie('token', accessToken, {
           httpOnly: true,
           expires: new Date(new Date().getTime() +10000000),
-          sameSite: 'strict',
         });
         return { accessToken };
     }
