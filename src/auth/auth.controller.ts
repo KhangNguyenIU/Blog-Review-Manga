@@ -43,7 +43,7 @@ export class AuthController {
   signin(
     @Body(ValidationPipe) loginDto: LoginDto,
     @Res({ passthrough: true }) res: Response,
-  ): Promise<{ accessToken: string }> {
+  ) {
     return this.authService.signin(loginDto, res);
   }
 
