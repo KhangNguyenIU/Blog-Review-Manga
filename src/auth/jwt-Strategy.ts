@@ -16,11 +16,10 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     private userRepository: UserRepository,
   ) {
     super({
-   
       jwtFromRequest: (req) => {
         if (!req || !req.cookies) return null;
         console.log("cookie", req.cookies["token"])
-        return req.cookies['token'];
+        return req.cookies;
       },
       ignoreExpiration: false,
       secretOrKey: process.env.JWT_SECRET || config.get('jwt').secret,
