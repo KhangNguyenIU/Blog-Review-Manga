@@ -37,10 +37,9 @@ export class AuthService {
       if (existedUser) {
         const payload: JwtPayload = { email };
         const accessToken = this.jwtService.sign(payload);
-        res.cookie('token', accessToken, {
+        return res.cookie('token', accessToken, {
           expires: new Date(new Date().getTime() +1000000),
-        });
-        return { accessToken };
+        }).status(200).json({accessToken})
       }
       const createUserDto: CreateUserDto = {
         username: name,
@@ -52,10 +51,9 @@ export class AuthService {
       const result = await this.userRepository.signup(createUserDto);
       const payload: JwtPayload = { email };
         const accessToken = this.jwtService.sign(payload);
-        res.cookie('token', accessToken, {
+        return res.cookie('token', accessToken, {
           expires: new Date(new Date().getTime() +1000000),
-        });
-        return { accessToken };
+        }).status(200).json({accessToken})
     }
     throw new NotImplementedException();
   }
@@ -67,7 +65,7 @@ export class AuthService {
   async signin(
     loginDto: LoginDto,
     res: Response,
-  ): Promise<{ accessToken: string }> {
+  ){
     const email = await this.validateUser(loginDto);
     if (!email) {
       throw new UnauthorizedException('Invalid Credential');
@@ -75,11 +73,10 @@ export class AuthService {
 
     const payload: JwtPayload = { email };
     const accessToken = this.jwtService.sign(payload);
-    res.cookie('token', accessToken, {
-      httpOnly: true,
+    return res.cookie('token', accessToken, {
       expires: new Date(new Date().getTime() + 60*60*24),   
-    });
-    return { accessToken };
+    }).status(200).json({accessToken})
+    
   }
 
   async validateUser(loginDto: LoginDto): Promise<string> {
