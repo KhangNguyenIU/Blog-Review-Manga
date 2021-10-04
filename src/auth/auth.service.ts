@@ -38,7 +38,6 @@ export class AuthService {
         const payload: JwtPayload = { email };
         const accessToken = this.jwtService.sign(payload);
         res.cookie('token', accessToken, {
-          httpOnly: true,
           expires: new Date(new Date().getTime() +1000000),
         });
         return { accessToken };
@@ -54,7 +53,6 @@ export class AuthService {
       const payload: JwtPayload = { email };
         const accessToken = this.jwtService.sign(payload);
         res.cookie('token', accessToken, {
-          httpOnly: true,
           expires: new Date(new Date().getTime() +1000000),
         });
         return { accessToken };
