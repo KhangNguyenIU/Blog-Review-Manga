@@ -19,7 +19,8 @@ async function bootstrap() {
   const port: number = parseInt(`${process.env.PORT}`) || 8000;
   await app.listen(port, () => {
     console.log('Server is running on port: ',port );
-    console.log(process.env.JWT_SECRET)
+    console.log("env",process.env.JWT_SECRET)
+    console.log("config",config.get('jwt').secret)
   });
 }
 bootstrap();
