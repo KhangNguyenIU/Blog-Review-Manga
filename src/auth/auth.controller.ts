@@ -50,7 +50,7 @@ export class AuthController {
   @Post()
   @UseGuards(AuthGuard('jwt'))
   getUser(@GetUser() user : User){
-    // console.log("user", user)
+    console.log("user", user)
     // return res.send(user)
     return user
   }
