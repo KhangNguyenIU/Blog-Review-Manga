@@ -55,9 +55,16 @@ export class AuthController {
     return user
   }
 
+  @Post('/test')
+  testSetCookie ( @Res() res : Response){
+    return res.cookie('test-cooken', "coooooooooookieeeeeeeeeeeeeee")
+    .status(200)
+    .json({message: 'set cookie'})
+  }
+
   @Get('/test')
   @UseGuards(AuthGuard('jwt'))
   tes(@GetUser() user: User, @Res() res: Response) {
-    return res.send("hello")
+    return res.json({user})
   }
 }
