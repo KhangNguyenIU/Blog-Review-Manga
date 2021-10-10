@@ -17,10 +17,11 @@ async function bootstrap() {
   app.use(json({ limit: '50mb' }));
   app.use(urlencoded({ extended: true, limit: '50mb' }));
   const port: number = parseInt(`${process.env.PORT}`) || 8000;
+
+
   await app.listen(port, () => {
     console.log('Server is running on port: ',port );
-    console.log("env",process.env.JWT_SECRET)
-    console.log("config",config.get('jwt').secret)
+
   });
 }
 bootstrap();
