@@ -18,16 +18,16 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     super({
       jwtFromRequest: (req) => {
         if (!req || !req.cookies) return null;
-        console.log("cookie", req.cookies["token"])
-        return req.cookies["token"];
+        console.log('cookie', req.cookies['test-cooken']);
+        return req.cookies['token'];
       },
       ignoreExpiration: false,
-      secretOrKey: process.env.JWT_SECRET ,
+      secretOrKey: process.env.JWT_SECRET,
     });
   }
 
   async validate(payload: JwtPayload) {
-    console.log({payload});
+    console.log({ payload });
     const { email } = payload;
     const user = await this.userRepository.findOne({ email });
     const { password, ...result } = user;

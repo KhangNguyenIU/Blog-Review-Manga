@@ -49,22 +49,23 @@ export class AuthController {
 
   @Post()
   @UseGuards(AuthGuard('jwt'))
-  getUser(@GetUser() user : User){
-    console.log("user", user)
+  getUser(@GetUser() user: User) {
+    console.log('user', user);
     // return res.send(user)
-    return user
+    return user;
   }
 
   @Post('/test')
-  testSetCookie ( @Res() res : Response){
-    return res.cookie('test-cooken', "coooooooooookieeeeeeeeeeeeeee")
-    .status(200)
-    .json({message: 'set cookie'})
+  testSetCookie(@Res() res: Response) {
+    return res
+      .cookie('test-cooken', 'coooooooooookieeeeeeeeeeeeeee')
+      .status(200)
+      .json({ message: 'set cookie' });
   }
 
   @Get('/test')
   @UseGuards(AuthGuard('jwt'))
   tes(@GetUser() user: User, @Res() res: Response) {
-    return res.json({user})
+    return res.json({ user });
   }
 }

@@ -7,18 +7,22 @@ import * as config from 'config';
 const dbConfig = config.get('db');
 
 export const typeOrmConfig: TypeOrmModuleOptions = {
-  type: process.env.DB_TYPE || dbConfig.type,
-  host: process.env.DB_HOSTNAME || dbConfig.host,
-  port: process.env.DB_PORT || dbConfig.port,
-  username: process.env.DB_USERNAME || dbConfig.username,
-  password: process.env.DB_PASSWORD || dbConfig.password,
-  database: process.env.DB_DATABASE || dbConfig.database,
-  ssl: process.env.NODE_ENV ==="production" ? true : false,
-  extra: {
-    ssl: {
-      rejectUnauthorized: !(process.env.NODE_ENV === "production"),
-    },
-  },
+
+  type: "postgress",
+  url: process.env.DB_URL,
+  ssl:true,
+  // type: process.env.DB_TYPE || dbConfig.type,
+  // host: process.env.DB_HOSTNAME || dbConfig.host,
+  // port: process.env.DB_PORT || dbConfig.port,
+  // username: process.env.DB_USERNAME || dbConfig.username,
+  // password: process.env.DB_PASSWORD || dbConfig.password,
+  // database: process.env.DB_DATABASE || dbConfig.database,
+  // ssl: process.env.NODE_ENV ==="production" ? true : false,
+  // extra: {
+  //   ssl: {
+  //     rejectUnauthorized: !(process.env.NODE_ENV === "production"),
+  //   },
+  // },
   entities: [`dist/**/**/*.entity{.ts,.js}`],
   synchronize: process.env.TYPEORM_SYNC || dbConfig.synchronize,
 };
