@@ -13,13 +13,7 @@ async function bootstrap() {
     credentials: true,
   })
   app.use(cookieParser());
-  // app.use(session({
-  //   secret :"asdasdadaddsaasd",
-  //   name: "nestjs",
-  //   cookie:{
-  //     path:"/"
-  //   }
-  // }))
+  
   app.use(json({ limit: '50mb' }));
   app.use(urlencoded({ extended: true, limit: '50mb' }));
   const port: number = parseInt(`${process.env.PORT}`) || 8000;

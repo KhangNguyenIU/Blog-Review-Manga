@@ -56,11 +56,10 @@ export class AuthController {
   }
 
   @Post('/test')
-  testSetCookie(@Res() res: Response) {
-    return res
-      .cookie('test-cooken', 'coooooooooookieeeeeeeeeeeeeee')
-      .status(200)
-      .json({ message: 'set cookie' });
+  testSetCookie(@Res({passthrough:true}) res: Response) {
+     res.cookie('test-cooken', 'coooooooooookieeeeeeeeeeeeeee')
+      
+      return res.status(200).json({ message: 'set cookie' });
   }
 
   @Get('/test')
