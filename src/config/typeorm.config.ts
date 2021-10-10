@@ -1,16 +1,12 @@
-
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import * as config from 'config';
-
-
 
 const dbConfig = config.get('db');
 
 export const typeOrmConfig: TypeOrmModuleOptions = {
-
-  type: "postgress",
-  url: process.env.DB_URL,
-  ssl:true,
+  type: 'postgres',
+  url: process.env.DATABASE_URL,
+  ssl: true,
   // type: process.env.DB_TYPE || dbConfig.type,
   // host: process.env.DB_HOSTNAME || dbConfig.host,
   // port: process.env.DB_PORT || dbConfig.port,
