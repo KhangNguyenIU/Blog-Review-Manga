@@ -16,7 +16,7 @@ export const typeOrmConfig: TypeOrmModuleOptions = {
   // ssl: process.env.NODE_ENV ==="production" ? true : false,
   extra: {
     ssl: {
-      rejectUnauthorized: !(process.env.NODE_ENV === "production"),
+      rejectUnauthorized:false,
     },
   },
   entities: [`dist/**/**/*.entity{.ts,.js}`],
