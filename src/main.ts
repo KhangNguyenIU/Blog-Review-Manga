@@ -6,12 +6,12 @@ import * as cookieParser from 'cookie-parser';
 import * as config from "config"
 import * as session from 'express-session'
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
-  app.enableCors({
-    origin: 'https://blog-review-manga-frontend-2ikk5m97e-khangnguyeniu.vercel.app',
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
-    credentials: true,
-  })
+  const app = await NestFactory.create(AppModule, {cors:true});
+  // app.enableCors({
+  //   origin: 'https://blog-review-manga-frontend-2ikk5m97e-khangnguyeniu.vercel.app',
+  //   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+  //   credentials: true,
+  // })
   app.use(cookieParser());
   
   app.use(json({ limit: '50mb' }));
