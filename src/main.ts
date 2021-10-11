@@ -8,7 +8,7 @@ import * as session from 'express-session'
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.enableCors({
-    origin: '*',
+    origin: 'https://blog-review-manga-frontend-2ikk5m97e-khangnguyeniu.vercel.app',
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     credentials: true,
   })
