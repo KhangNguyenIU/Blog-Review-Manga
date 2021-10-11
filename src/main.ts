@@ -3,25 +3,34 @@ import { AppModule } from './app.module';
 
 import { urlencoded, json } from 'express';
 import * as cookieParser from 'cookie-parser';
-import * as config from "config"
-import * as session from 'express-session'
+import * as config from 'config';
+import * as session from 'express-session';
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule, {cors:true});
-  // app.enableCors({
-  //   origin: 'https://blog-review-manga-frontend-2ikk5m97e-khangnguyeniu.vercel.app',
-  //   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
-  //   credentials: true,
-  // })
+  const app = await NestFactory.create(AppModule);
+  var whitelist = ['https://www.myblog.engineer', 'https://localhost:3000'];
+  app.enableCors({
+    origin: function (origin, callback) {
+      if (whitelist.indexOf(origin) !== -1) {
+        console.log('allowed cors for:', origin);
+        callback(null, true);
+      } else {
+        console.log('blocked cors for:', origin);
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
+    allowedHeaders:
+      'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept, Observe',
+    methods: 'GET,PUT,POST,DELETE,UPDATE,OPTIONS',
+    credentials: true,
+  });
   app.use(cookieParser());
-  
+
   app.use(json({ limit: '50mb' }));
   app.use(urlencoded({ extended: true, limit: '50mb' }));
   const port: number = parseInt(`${process.env.PORT}`) || 8000;
 
-
   await app.listen(port, () => {
-    console.log('Server is running on port:  ',port );
-
+    console.log('Server is running on port:  ', port);
   });
 }
 bootstrap();
