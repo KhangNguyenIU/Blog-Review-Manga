@@ -5,8 +5,9 @@ import { urlencoded, json } from 'express';
 import * as cookieParser from 'cookie-parser';
 import * as config from 'config';
 import * as session from 'express-session';
+import { NestExpressApplication } from '@nestjs/platform-express';
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
   var whitelist = ['https://www.myblog.engineer', 'https://localhost:3000'];
   app.enableCors({
     origin: function (origin, callback) {
