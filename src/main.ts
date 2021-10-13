@@ -8,7 +8,7 @@ import * as session from 'express-session';
 import { NestExpressApplication } from '@nestjs/platform-express';
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
-  // var whitelist = ['https://www.myblog.engineer', 'https://localhost:3000'];
+  const whitelist = ['https://www.myblog.engineer', 'https://localhost:3000'];
   // app.enableCors({
   //   origin: function (origin, callback) {
   //     if (whitelist.indexOf(origin) !== -1) {
@@ -24,7 +24,20 @@ async function bootstrap() {
   //   methods: 'GET,PUT,POST,DELETE,UPDATE,OPTIONS',
   //   credentials: true,
   // });
-  app.enableCors();
+  app.enableCors({
+    origin: function (origin, callback) {
+      if (!origin || whitelist.indexOf(origin) !== -1) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
+    allowedHeaders:
+      'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept, Observe',
+    methods: 'GET,PUT,POST,DELETE,UPDATE,OPTIONS',
+    credentials: true,
+  });
+  // app.enableCors();
   app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
