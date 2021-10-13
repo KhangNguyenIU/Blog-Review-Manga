@@ -57,6 +57,7 @@ export class AuthController {
 
   @Post('/test')
   testSetCookie(@Res({ passthrough: true }) res: Response) {
+    console.log("test")
     return res
       .cookie('test-cooken', 'coooooooooookieeeeeeeeeeeeeee')
       .status(200)
