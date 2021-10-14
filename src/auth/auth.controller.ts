@@ -60,7 +60,6 @@ export class AuthController {
     console.log("test")
     return res
       .cookie('test-cooken', 'coooooooooookieeeeeeeeeeeeeee')
-      .status(200)
       .json({ message: 'set cookie' });
   }
 
