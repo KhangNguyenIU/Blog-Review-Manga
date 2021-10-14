@@ -3,12 +3,26 @@ import { AppModule } from './app.module';
 
 import { urlencoded, json } from 'express';
 import * as cookieParser from 'cookie-parser';
-import * as fs from 'fs'
+import * as fs from 'fs';
+import { NestExpressApplication } from '@nestjs/platform-express';
 async function bootstrap() {
-
-
-  const app = await NestFactory.create(AppModule);
-  app.enableCors()
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
+  const whitelist = ['https://www.myblog.engineer', 'http://localhost:3000'];
+  app.enableCors({
+    origin: function (origin, callback) {
+      if (whitelist.indexOf(origin) !== -1) {
+        console.log('allowed cors for:', origin);
+        callback(null, true);
+      } else {
+        console.log('blocked cors for:', origin);
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
+    allowedHeaders:
+      'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept, Observe',
+    methods: 'GET,PUT,POST,DELETE,UPDATE,OPTIONS',
+    credentials: true,
+  });
   app.use(cookieParser());
 
   app.use(json({ limit: '50mb' }));
@@ -21,7 +35,7 @@ async function bootstrap() {
     res.header('Access-Control-Allow-Headers', 'Content-Type, Accept');
     next();
   });
-  
+
   await app.listen(port, () => {
     console.log('Server is running on port:  ', port);
   });
