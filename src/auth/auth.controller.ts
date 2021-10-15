@@ -57,15 +57,16 @@ export class AuthController {
 
   @Post('/test')
   testSetCookie(@Res({ passthrough: true }) res: Response) {
-    console.log("test")
-    return res
-      .cookie('test-cooken', 'coooooooooookieeeeeeeeeeeeeee')
-      .json({ message: 'set cookie' });
+    console.log('test');
+    res.cookie('token', "accessToken", {
+      expires: new Date(new Date().getTime() + 1000000),
+    });
   }
 
   @Get('/test')
-  @UseGuards(AuthGuard('jwt'))
-  tes(@GetUser() user: User, @Res() res: Response) {
-    return res.json({ user });
+  // @UseGuards(AuthGuard('jwt'))
+  tes(@Res() req: Request) {
+    console.log(req.cookies);
+    return 'get cookie';
   }
 }

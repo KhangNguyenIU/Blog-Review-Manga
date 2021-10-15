@@ -8,12 +8,18 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   const whitelist = ['https://www.myblog.engineer', 'http://localhost:3000'];
+  // app.enableCors({
+  //   allowedHeaders:
+  //     'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept, Observe',
+  //   methods: 'GET,PUT,POST,DELETE,UPDATE,OPTIONS',
+  //   credentials: true,
+  // });
+
   app.enableCors({
-    allowedHeaders:
-      'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept, Observe',
-    methods: 'GET,PUT,POST,DELETE,UPDATE,OPTIONS',
+    origin:true,
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     credentials: true,
-  });
+  })
   app.use(cookieParser());
 
   app.use(json({ limit: '50mb' }));

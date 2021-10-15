@@ -38,13 +38,13 @@ export class AuthService {
         try {
           const payload: JwtPayload = { email };
           const accessToken = this.jwtService.sign(payload);
-          return res
+           res
             .cookie('token', accessToken, {
               expires: new Date(new Date().getTime() + 1000000),
-              domain:'https://manga-blog.herokuapp.com'
+              httpOnly:true,
             })
-            .status(200)
-            .json({ accessToken });
+       
+            return { accessToken };
         } catch (error) {
           throw new NotImplementedException('cannot set cookie');
         }
@@ -60,14 +60,13 @@ export class AuthService {
       try {
         const payload: JwtPayload = { email };
         const accessToken = this.jwtService.sign(payload);
-        return res
+         res
           .cookie('token', accessToken, {
             expires: new Date(new Date().getTime() + 1000000),
-            domain:'https://manga-blog.herokuapp.com'
-
+            httpOnly:true,
           })
-          .status(200)
-          .json({ accessToken });
+      
+          return { accessToken };
       } catch (error) {
         throw new NotImplementedException('cannot set cookie');
       }
