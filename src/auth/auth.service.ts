@@ -35,14 +35,19 @@ export class AuthService {
     if (email_verified) {
       const existedUser: User = await this.userRepository.findOne({ email });
       if (existedUser) {
-        const payload: JwtPayload = { email };
-        const accessToken = this.jwtService.sign(payload);
-        res.cookie('token', accessToken, {
-          httpOnly: true,
-          expires: new Date(new Date().getTime() +10000000),
-          sameSite: 'strict',
-        });
-        return { accessToken };
+        try {
+          const payload: JwtPayload = { email };
+          const accessToken = this.jwtService.sign(payload);
+           res
+            .cookie('token', accessToken, {
+              expires: new Date(new Date().getTime() + 1000000),
+              httpOnly:true,
+            })
+       
+            return { accessToken };
+        } catch (error) {
+          throw new NotImplementedException('cannot set cookie');
+        }
       }
       const createUserDto: CreateUserDto = {
         username: name,
@@ -52,14 +57,19 @@ export class AuthService {
         reenterpassword: jti,
       };
       const result = await this.userRepository.signup(createUserDto);
-      const payload: JwtPayload = { email };
+      try {
+        const payload: JwtPayload = { email };
         const accessToken = this.jwtService.sign(payload);
-        res.cookie('token', accessToken, {
-          httpOnly: true,
-          expires: new Date(new Date().getTime() +10000000),
-          sameSite: 'strict',
-        });
-        return { accessToken };
+         res
+          .cookie('token', accessToken, {
+            expires: new Date(new Date().getTime() + 1000000),
+            httpOnly:true,
+          })
+      
+          return { accessToken };
+      } catch (error) {
+        throw new NotImplementedException('cannot set cookie');
+      }
     }
     throw new NotImplementedException();
   }
@@ -68,23 +78,24 @@ export class AuthService {
     return this.userRepository.signup(createUserDto);
   }
 
-  async signin(
-    loginDto: LoginDto,
-    res: Response,
-  ): Promise<{ accessToken: string }> {
+  async signin(loginDto: LoginDto, res: Response) {
     const email = await this.validateUser(loginDto);
     if (!email) {
       throw new UnauthorizedException('Invalid Credential');
     }
 
-    const payload: JwtPayload = { email };
-    const accessToken = this.jwtService.sign(payload);
-    res.cookie('token', accessToken, {
-      httpOnly: true,
-      secure: true,
-      expires: new Date(new Date().getTime() + 60*60*24),
-    });
-    return { accessToken };
+    try {
+      const payload: JwtPayload = { email };
+      const accessToken = this.jwtService.sign(payload);
+      return res
+        .cookie('token', accessToken, {
+          expires: new Date(new Date().getTime() + 1000000),
+        })
+        .status(200)
+        .json({ accessToken });
+    } catch (error) {
+      throw new NotImplementedException('cannot set cookie');
+    }
   }
 
   async validateUser(loginDto: LoginDto): Promise<string> {

@@ -43,21 +43,30 @@ export class AuthController {
   signin(
     @Body(ValidationPipe) loginDto: LoginDto,
     @Res({ passthrough: true }) res: Response,
-  ): Promise<{ accessToken: string }> {
+  ) {
     return this.authService.signin(loginDto, res);
   }
 
   @Post()
   @UseGuards(AuthGuard('jwt'))
-  getUser(@GetUser() user : User){
-    // console.log("user", user)
+  getUser(@GetUser() user: User) {
+    console.log('user', user);
     // return res.send(user)
-    return user
+    return user;
+  }
+
+  @Post('/test')
+  testSetCookie(@Res({ passthrough: true }) res: Response) {
+    console.log('test');
+    res.cookie('token', "accessToken", {
+      expires: new Date(new Date().getTime() + 1000000),
+    });
   }
 
   @Get('/test')
-  @UseGuards(AuthGuard('jwt'))
-  tes(@GetUser() user: User, @Res() res: Response) {
-    return res.send("hello")
+  // @UseGuards(AuthGuard('jwt'))
+  tes(@Res() req: Request) {
+    console.log(req.cookies);
+    return 'get cookie';
   }
 }
