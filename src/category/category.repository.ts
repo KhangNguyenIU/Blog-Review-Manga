@@ -11,7 +11,8 @@ export class CategoryRepository extends Repository<Category> {
     const { name, description } = createCategoryDto;
 
     const category = new Category();
-    (category.name = name), (category.description = description);
+    (category.name = name),
+     (category.description = description || "Updating");
     try {
       await category.save();
       return category;

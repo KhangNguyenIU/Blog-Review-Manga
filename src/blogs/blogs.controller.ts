@@ -37,14 +37,6 @@ import { UploadApiErrorResponse, UploadApiResponse } from 'cloudinary';
 export class BlogsController {
   constructor(private blogsService: BlogsService) {}
 
-  // @Post()
-  // // @UseGuards(AuthGuard('jwt'))
-  // createBlog(
-  //   @Body(ValidationPipe) creatBlogDto: CreateBlogDto,
-  //   @GetUser() user: User,
-  // ): Promise<Blog> {
-  //   return this.blogsService.createBlog(creatBlogDto, user);
-  // }
 
   @Get()
   getBlogs(
@@ -78,7 +70,6 @@ export class BlogsController {
     @Body(ValidationPipe) createBlogDto: CreateBlogDto,
     @GetUser() user: User,
   ): Promise<Blog> {
-    // console.log({user})
     return this.blogsService.createBlog(createBlogDto, user);
   }
 }

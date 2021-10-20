@@ -73,7 +73,7 @@ export class BlogsService {
       createBlogDto.cover = cover;
     }
 
-    let content = JSON.parse(body);
+    let content = body;
     let exceprt : string= exceprtCut(content.blocks) 
     var arrayMap = await Promise.all(
       content.blocks.map(async (block, index) => {
@@ -88,7 +88,7 @@ export class BlogsService {
     );
 
       createBlogDto.exceprt =exceprt
-    createBlogDto.body = JSON.stringify(content);
+    createBlogDto.body = content;
     // console.log(createBlogDto);
     const result = await this.blogRepository.createBlog(createBlogDto, user);
     if (!result) throw new NotImplementedException('Error in saving blog');

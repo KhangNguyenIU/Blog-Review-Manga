@@ -18,7 +18,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     super({
       jwtFromRequest: (req) => {
         if (!req || !req.cookies) return null;
-        console.log('cookie', req.cookies['test-cooken']);
         return req.cookies['token'];
       },
       ignoreExpiration: false,
@@ -27,7 +26,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate(payload: JwtPayload) {
-    console.log({ payload });
     const { email } = payload;
     const user = await this.userRepository.findOne({ email });
     const { password, ...result } = user;
