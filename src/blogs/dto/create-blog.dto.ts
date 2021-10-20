@@ -14,9 +14,7 @@ export class CreateBlogDto {
   exceprt: string;
 
   @IsNotEmpty()
-  @MinLength(100)
-  // @MaxLength(1000000)
-  body: string;
+  body: any;
 
 
   categories: number[];
