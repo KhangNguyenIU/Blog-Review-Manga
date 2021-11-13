@@ -16,6 +16,7 @@ export class BlogRepository extends Repository<Blog> {
       .where({ id })
       .select([
         'blog',
+        'user.id',
         'user.username',
         'user.email',
         'user.avatar',
@@ -60,6 +61,7 @@ export class BlogRepository extends Repository<Blog> {
     query
       .select([
         'blog',
+        'user.id',
         'user.username',
         'user.email',
         'user.avatar',

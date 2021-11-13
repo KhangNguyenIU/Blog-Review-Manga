@@ -40,8 +40,8 @@ export class AuthService {
           const accessToken = this.jwtService.sign(payload);
            res
             .cookie('token', accessToken, {
-              expires: new Date(new Date().getTime() + 1000000),
               httpOnly:true,
+              expires: new Date(new Date().getTime() + 1000000),
             })
        
             return { accessToken };
@@ -62,8 +62,8 @@ export class AuthService {
         const accessToken = this.jwtService.sign(payload);
          res
           .cookie('token', accessToken, {
-            expires: new Date(new Date().getTime() + 1000000),
             httpOnly:true,
+            expires: new Date(new Date().getTime() + 1000000),
           })
       
           return { accessToken };
@@ -87,12 +87,13 @@ export class AuthService {
     try {
       const payload: JwtPayload = { email };
       const accessToken = this.jwtService.sign(payload);
-      return res
+      res
         .cookie('token', accessToken, {
+          httpOnly:true,
           expires: new Date(new Date().getTime() + 1000000),
         })
-        .status(200)
-        .json({ accessToken });
+        
+        return { accessToken };
     } catch (error) {
       throw new NotImplementedException('cannot set cookie');
     }

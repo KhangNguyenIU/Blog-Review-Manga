@@ -60,8 +60,12 @@ export class BlogsController {
   }
 
   @Delete('/:id')
-  deleteBlog(@Param('id', ParseIntPipe) id: number): Promise<string> {
-    return this.blogsService.deleteBlog(id);
+  @UseGuards(AuthGuard('jwt'))
+  deleteBlog(
+    @Param('id', ParseIntPipe) id: number,
+    @GetUser() user: User
+    ): Promise<string> {
+    return this.blogsService.deleteBlog(id, user);
   }
 
   @Post('/')
