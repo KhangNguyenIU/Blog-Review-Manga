@@ -1,5 +1,5 @@
 export const exceprtCut = (block) => {
-  console.log('block', typeof block);
+  // console.log('block', typeof block);
   let i: number = 0;
   let result: string = '';
   while (i<block.length) {

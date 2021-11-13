@@ -1,5 +1,6 @@
 import {
   BadRequestException,
+  ConflictException,
   Injectable,
   NotFoundException,
   NotImplementedException,
@@ -38,7 +39,7 @@ export class BlogsService {
   }
 
   async getBlogById(id: number): Promise<Blog> {
-    const blog = await this.blogRepository.getBlogById(id)
+    const blog = await this.blogRepository.getBlogById(id);
     if (!blog) {
       throw new NotFoundException(`Blog with id: ${id} is not found!`);
     }
@@ -50,7 +51,11 @@ export class BlogsService {
     return this.blogRepository.updateBlog(updateBlogDto, id);
   }
 
-  async deleteBlog(id: number): Promise<string> {
+  async deleteBlog(id: number, user: User): Promise<string> {
+    const existedBlog = await this.getBlogById(id);
+    if (existedBlog.user.id !== user.id) {
+        throw new ConflictException("Unauthorized for this action")
+    }
     const result = await this.blogRepository.delete({ id });
     if (result.affected == 0) {
       throw new NotFoundException(`Blog with id: ${id} is not existed`);
@@ -60,8 +65,7 @@ export class BlogsService {
   }
 
   async createBlog(createBlogDto: CreateBlogDto, user: User): Promise<Blog> {
-
-    const { title, cover, body,  categories } = createBlogDto;
+    const { title, cover, body, categories } = createBlogDto;
 
     let blog = new Blog();
     if (isBase64Image(cover)) {
@@ -74,20 +78,20 @@ export class BlogsService {
     }
 
     let content = body;
-    let exceprt : string= exceprtCut(content.blocks) 
+    let exceprt: string = exceprtCut(content.blocks);
     var arrayMap = await Promise.all(
       content.blocks.map(async (block, index) => {
         if (block.type === 'image') {
           const image: any = await this.cloudinaryService.uploadImage(
             block.data.url,
           );
-          // console.log({image})
+          console.log({image})
           content.blocks[index].data.url = image.secure_url;
         }
       }),
     );
 
-      createBlogDto.exceprt =exceprt
+    createBlogDto.exceprt = exceprt;
     createBlogDto.body = content;
     // console.log(createBlogDto);
     const result = await this.blogRepository.createBlog(createBlogDto, user);
