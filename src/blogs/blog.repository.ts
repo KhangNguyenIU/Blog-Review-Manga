@@ -36,11 +36,16 @@ export class BlogRepository extends Repository<Blog> {
     return blog;
   }
 
+  async getTotalBlogsLength(): Promise<Number> {
+    const blogs = await this.find();
+    return blogs.length;
+  }
+
   async getBlogs(getBlogsFilterDto: GetBlogFilterDto): Promise<Blog[]> {
     const { search, limit, page, order } = getBlogsFilterDto;
-    const take = isNaN(limit) ? 10 : Number(limit);
-    const skip = isNaN(page) ? 0 : Number(page);
-    //console.log({ search, take, skip }, typeof take, typeof skip);
+    const take = isNaN(limit) ? 5 : Number(limit);
+    const skip = ((isNaN(page) ? 0 : Number(page)) - 1) * take;
+    // console.log({ search, take, skip }, typeof take, typeof skip);
 
     const query = this.createQueryBuilder('blog');
 
@@ -51,12 +56,8 @@ export class BlogRepository extends Repository<Blog> {
       );
     }
     if (take && skip) {
-      query.take(take).skip(skip);
+      query.skip(skip).take(take);
     }
-
-    // if (order) {
-    //   query.orderBy(order);
-    // }
 
     query
       .select([
@@ -76,8 +77,7 @@ export class BlogRepository extends Repository<Blog> {
         'category',
         'category.id = cb.categoryId',
       )
-      .orderBy('blog.created_at');
-      
+      .orderBy('blog.created_at', 'DESC');
 
     const blogs = await query.getMany();
     return blogs;

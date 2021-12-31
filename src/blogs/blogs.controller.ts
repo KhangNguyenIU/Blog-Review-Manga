@@ -50,6 +50,10 @@ export class BlogsController {
     return this.blogsService.getBlogById(id);
   }
 
+  @Get('/total/page')
+  getTotalBlogNumber() : Promise<Number> {
+    return this.blogsService.getNumberOfBlogs();
+  }
 
   @Patch('/:id')
   updateBlog(
