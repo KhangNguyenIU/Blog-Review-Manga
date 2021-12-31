@@ -14,11 +14,11 @@ export const typeOrmConfig: TypeOrmModuleOptions = {
   ssl: process.env.NODE_ENV ==="production",
   // ssl: true,
 
-  extra: {
-    ssl: {
-      rejectUnauthorized:false,
-    },
-  },
+  // extra: {
+  //   ssl: {
+  //     rejectUnauthorized:false,
+  //   },
+  // },
   entities: [`dist/**/**/*.entity{.ts,.js}`],
   synchronize: process.env.TYPEORM_SYNC || dbConfig.synchronize,
 };

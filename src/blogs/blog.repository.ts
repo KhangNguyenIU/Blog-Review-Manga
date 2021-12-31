@@ -44,8 +44,8 @@ export class BlogRepository extends Repository<Blog> {
   async getBlogs(getBlogsFilterDto: GetBlogFilterDto): Promise<Blog[]> {
     const { search, limit, page, order } = getBlogsFilterDto;
     const take = isNaN(limit) ? 5 : Number(limit);
-    const skip = ((isNaN(page) ? 0 : Number(page)) - 1) * take;
-    // console.log({ search, take, skip }, typeof take, typeof skip);
+    const skip = ((isNaN(page) ? 1 : Number(page)) - 1) * take;
+    console.log({ search, take, skip }, typeof take, typeof skip);
 
     const query = this.createQueryBuilder('blog');
 
