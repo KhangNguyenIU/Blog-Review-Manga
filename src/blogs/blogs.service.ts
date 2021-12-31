@@ -38,6 +38,13 @@ export class BlogsService {
     return blogs;
   }
 
+  async getNumberOfBlogs(): Promise<Number>{
+    const blogs = await this.blogRepository.getTotalBlogsLength();
+    if(!blogs){
+      throw new NotImplementedException();
+    }
+    return blogs
+  }
   async getBlogById(id: number): Promise<Blog> {
     const blog = await this.blogRepository.getBlogById(id);
     if (!blog) {
