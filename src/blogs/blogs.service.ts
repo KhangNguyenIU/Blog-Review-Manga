@@ -38,12 +38,12 @@ export class BlogsService {
     return blogs;
   }
 
-  async getNumberOfBlogs(): Promise<Number>{
+  async getNumberOfBlogs(): Promise<Number> {
     const blogs = await this.blogRepository.getTotalBlogsLength();
-    if(!blogs){
+    if (!blogs) {
       throw new NotImplementedException();
     }
-    return blogs
+    return blogs;
   }
   async getBlogById(id: number): Promise<Blog> {
     const blog = await this.blogRepository.getBlogById(id);
@@ -54,6 +54,19 @@ export class BlogsService {
     return blog;
   }
 
+  async getBlogByCategory(category: number): Promise<Blog[]> {
+    const blogs = await this.blogRepository.getBlogByCategory(category);
+    if (!blogs) throw new NotFoundException();
+    return blogs;
+  }
+  async getBlogBySlug(slug: string): Promise<Blog> {
+    const blog = await this.blogRepository.getBlogBySlug(slug);
+    if (!blog) {
+      throw new NotFoundException(`Blog with slud: ${slug} is not found`);
+    }
+    return blog;
+  }
+
   async updateBlog(updateBlogDto: UpdateBlogDto, id: number): Promise<Blog> {
     return this.blogRepository.updateBlog(updateBlogDto, id);
   }
@@ -61,7 +74,7 @@ export class BlogsService {
   async deleteBlog(id: number, user: User): Promise<string> {
     const existedBlog = await this.getBlogById(id);
     if (existedBlog.user.id !== user.id) {
-        throw new ConflictException("Unauthorized for this action")
+      throw new ConflictException('Unauthorized for this action');
     }
     const result = await this.blogRepository.delete({ id });
     if (result.affected == 0) {
@@ -92,7 +105,7 @@ export class BlogsService {
           const image: any = await this.cloudinaryService.uploadImage(
             block.data.url,
           );
-          console.log({image})
+          console.log({ image });
           content.blocks[index].data.url = image.secure_url;
         }
       }),

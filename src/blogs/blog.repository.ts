@@ -36,9 +36,52 @@ export class BlogRepository extends Repository<Blog> {
     return blog;
   }
 
+  async getBlogBySlug(slug: string): Promise<Blog> {
+    const query = this.createQueryBuilder('blog');
+    query
+      .where({ slug })
+      .select([
+        'blog',
+        'user.id',
+        'user.username',
+        'user.email',
+        'user.avatar',
+        'cb',
+        'category',
+      ])
+      .leftJoin('blog.user', 'user')
+      .leftJoin('blog.categoriesBlogs', 'cb', 'cb.blogId = blog.id')
+
+      .leftJoinAndSelect(
+        'cb.category',
+        'category',
+        'category.id = cb.categoryId',
+      );
+    const blog = await query.getOne();
+    return blog;
+  }
+
   async getTotalBlogsLength(): Promise<Number> {
-    const blogs = await this.find();
-    return blogs.length;
+    const blogsNumber = await this.count();
+    return blogsNumber;
+  }
+
+  async getBlogByCategory(category: number): Promise<Blog[]> {
+    const query = this.createQueryBuilder('blog');
+    query
+      .where({})
+      .select([
+        'blog.id',
+        // 'user.id',
+        // 'user.username',
+        // 'user.email',
+        // 'user.avatar',
+        'cb',
+        // 'category',
+      ])
+      .leftJoin('blog.categoriesBlogs', 'cb', 'cb.categoryId=3');
+    const blogs = await query.getMany();
+    return blogs;
   }
 
   async getBlogs(getBlogsFilterDto: GetBlogFilterDto): Promise<Blog[]> {
@@ -55,11 +98,10 @@ export class BlogRepository extends Repository<Blog> {
         { search: `%${search}%` },
       );
     }
-    if (take && skip) {
-      query.skip(skip).take(take);
-    }
 
     query
+      .skip(skip)
+      .take(take)
       .select([
         'blog',
         'user.id',

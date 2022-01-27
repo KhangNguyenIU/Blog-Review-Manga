@@ -6,10 +6,10 @@ export const exceprtCut = (block) => {
     if (block[i].type == 'unstyled' || block[i].type == 'blockquote') {
       let string = block[i].text;
       console.log("string........", string)
-      if (string.length <= 250) {
+      if (string.length <= 100) {
         result = string + '...';
       } else {
-        string =string.substr(0,250)
+        string =string.substr(0,100)
         let spaceIndex = string.lastIndexOf(' ');
         result = string.substr(0, spaceIndex) + '...';
       }
