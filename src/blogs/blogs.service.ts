@@ -6,12 +6,6 @@ import {
   NotImplementedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import {
-  UploadApiErrorResponse,
-  UploadApiResponse,
-  UploadResponseCallback,
-} from 'cloudinary';
-import { log } from 'console';
 import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 import { User } from 'src/user/user.entity';
 import { isBase64Image } from 'src/utilities/handleImageUrl';
@@ -56,7 +50,7 @@ export class BlogsService {
 
   async getBlogByCategory(category: number): Promise<Blog[]> {
     const blogs = await this.blogRepository.getBlogByCategory(category);
-    if (!blogs) throw new NotFoundException();
+    if (!blogs || !blogs.length) throw new NotFoundException();
     return blogs;
   }
   async getBlogBySlug(slug: string): Promise<Blog> {

@@ -1,11 +1,9 @@
 export const exceprtCut = (block) => {
-  // console.log('block', typeof block);
   let i: number = 0;
   let result: string = '';
   while (i<block.length) {
     if (block[i].type == 'unstyled' || block[i].type == 'blockquote') {
       let string = block[i].text;
-      console.log("string........", string)
       if (string.length <= 100) {
         result = string + '...';
       } else {

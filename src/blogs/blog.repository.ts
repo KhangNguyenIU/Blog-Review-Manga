@@ -67,19 +67,27 @@ export class BlogRepository extends Repository<Blog> {
   }
 
   async getBlogByCategory(category: number): Promise<Blog[]> {
+    console.log(typeof category , category)
     const query = this.createQueryBuilder('blog');
     query
       .where({})
       .select([
-        'blog.id',
-        // 'user.id',
-        // 'user.username',
-        // 'user.email',
-        // 'user.avatar',
+        'blog.title',
+        'user.id',
+        'user.username',
+        'user.email',
+        'user.avatar',
         'cb',
-        // 'category',
+        'category',
       ])
-      .leftJoin('blog.categoriesBlogs', 'cb', 'cb.categoryId=3');
+      .leftJoin('blog.user', 'user')
+      .leftJoin('blog.categoriesBlogs', 'cb', 'cb.blogId = blog.id')
+      .leftJoinAndSelect(
+        'cb.category',
+        'category',
+        'category.id = cb.categoryId',
+      )
+      .where('category.id = :category', { category });
     const blogs = await query.getMany();
     return blogs;
   }
@@ -140,7 +148,7 @@ export class BlogRepository extends Repository<Blog> {
     blog.cover = cover;
     blog.body = body;
     blog.exceprt = exceprt;
-    blog.slug = slugify(title);
+    blog.slug = slugify(title,{locale:'vi'});
     blog.user = user;
     await blog.save();
     for (const cate of categoryList) {
